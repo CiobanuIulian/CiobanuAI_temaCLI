@@ -1,0 +1,29 @@
+1. Viewport-ul reprezintă acea porțiune a ferestrei de afișare în care este desenată scena 3D. În OpenGL, viewport-ul definește dimensiunea și poziția pe fereastra de ieșire în care vor fi randate obiectele 3D. Este setat folosind funcția glViewport(), care ia patru parametri: poziția colțului din stânga jos (x, y) și dimensiunile lățimii și înălțimii (width, height) ale viewport-ului.
+
+2. Frames per second (FPS) măsoară numărul de cadre (imagini) care sunt randate și afișate pe ecran într-o secundă. În contextul OpenGL, FPS-ul reprezintă cât de eficient este programul tău în randarea scenelor. Un FPS ridicat înseamnă că programul reușește să actualizeze și să afișeze cadre foarte rapid, rezultând într-o animație fluidă. Un FPS scăzut sugerează că randarea scenei durează mai mult decât o secundă, ceea ce poate cauza întreruperi sau "lag".
+
+3. Metoda OnUpdateFrame() este rulată înainte de fiecare cadru nou, și este responsabilă pentru actualizarea logicii aplicației, cum ar fi mișcarea obiectelor, actualizarea intrărilor utilizatorului sau alte procese de fundal. Acest lucru se întâmplă de obicei la fiecare iterație a buclei de randare.
+
+4. Modul imediat de randare (Immediate Mode) este o metodă veche și ineficientă de a randa geometrie în OpenGL. În acest mod, fiecare apel OpenGL specifică direct vertecși, culori, texturi și alte atribute pentru fiecare obiect care trebuie randat. Se utilizează funcții precum glBegin() și glEnd() pentru a începe și a termina specificarea unei primitive grafice (triunghi, pătrat, etc.).
+
+Acest mod este considerat ineficient deoarece pentru fiecare obiect se trimit comenzi către GPU la fiecare frame, ceea ce duce la o utilizare slabă a resurselor hardware.
+
+5. Ultima versiune de OpenGL care acceptă modul imediat de randare este OpenGL 3.0, însă acesta a fost marcat ca învechit (deprecated). În versiunile mai noi de OpenGL (începând cu OpenGL 3.1 și mai departe), modul imediat a fost eliminat complet, fiind înlocuit de metode mai eficiente, cum ar fi Vertex Buffer Objects (VBOs) și Vertex Array Objects (VAOs).
+
+6. Metoda OnRenderFrame() este rulată după ce scena a fost actualizată de către OnUpdateFrame(). Aceasta este responsabilă pentru randarea efectivă a obiectelor din scena pe ecran. Se apelează la fiecare iterație a buclei de joc sau simulare, în mod repetat, pentru a actualiza imaginea afișată.
+
+7. Metoda OnResize() trebuie să fie executată cel puțin o dată pentru a ajusta corect viewport-ul și alte setări legate de dimensiunea ferestrei atunci când aplicația începe. Dacă nu este apelată această metodă, randarea nu se va adapta corect la dimensiunea ferestrei, ceea ce poate duce la o scalare incorectă a imaginii sau la deformări vizuale.
+
+De asemenea, OnResize() este apelată ori de câte ori fereastra este redimensionată, pentru a adapta viewport-ul și proiecțiile corect.
+
+8. Metoda CreatePerspectiveFieldOfView() este utilizată pentru a seta o proiecție de perspectivă, adică cum sunt văzute obiectele într-o scenă 3D, astfel încât obiectele mai îndepărtate să pară mai mici.
+
+Parametrii principali sunt:
+
+  Field of View (FoV): reprezintă câmpul vizual, adică unghiul în grade al deschiderii camerei. Valorile tipice sunt între 30° și 120°, unde unghiuri mai mici oferă o vedere mai "zoomată", iar unghiuri mai mari oferă o vedere mai largă.
+
+  Aspect Ratio: raportul între lățimea și înălțimea ferestrei de vizualizare (viewport). De exemplu, pentru un ecran standard 16:9, raportul este 16/9.
+
+  Near Plane: distanța minimă la care obiectele vor fi vizibile. Orice obiect mai aproape decât acest plan nu va fi randat. De obicei, valorile sunt pozitive și mici, de exemplu, 0.1.
+
+  Far Plane: distanța maximă la care obiectele vor fi vizibile. Obiectele aflate mai departe de acest plan nu vor fi randate. De obicei, valorile sunt mai mari, de exemplu, 1000.
